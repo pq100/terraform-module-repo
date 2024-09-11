@@ -18,7 +18,7 @@ resource "aws_instance" "this" {
     Name = var.instance_name
   }
 
-  # user_data 참조
+  # user_data 모듈 참조
   user_data = var.user_data
 
 }
