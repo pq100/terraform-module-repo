@@ -1,13 +1,12 @@
+# fastapi 앱을 설치하는 user-data
+
 data "template_file" "fastapi_userdata" {
   template = <<-EOF
-    wget https://repo.anaconda.com/miniconda/Miniconda3-py310_24.7.1-0-Linux-x86_64.sh -O /tmp/Miniconda3.sh
-    bash /tmp/Miniconda3.sh -b -p /home/ubuntu/miniconda3
-    echo 'export PATH="/home/ubuntu/miniconda3/bin:$PATH"' >> /home/ubuntu/.bashrc
-    source /home/ubuntu/.bashrc
-
+    # FastAPI / Uvicorn 설치
     /home/ubuntu/miniconda3/bin/conda install -y python=3.10
     /home/ubuntu/miniconda3/bin/pip install fastapi uvicorn
 
+    # 간단한 FastAPI 앱 생성
     cat <<EOL > /home/ubuntu/main.py
     from fastapi import FastAPI
 
@@ -18,6 +17,7 @@ data "template_file" "fastapi_userdata" {
         return {'Hello':'World!!'}
     EOL
 
+    # FastAPI 앱 실행
     cat <<EOL > /etc/systemd/system/fastapi.service
     [Unit]
     Description=FastAPI app
@@ -33,7 +33,9 @@ data "template_file" "fastapi_userdata" {
     WantedBy=multi-user.target
     EOL
 
+    # FastAPI 자동 시작 지정
     systemctl start fastapi
     systemctl enable fastapi
-  EOF
+
+    EOF
 }
