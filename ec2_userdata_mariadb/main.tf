@@ -33,5 +33,4 @@ data "template_file" "mariadb_userdata" {
     y
     EOF
 
-  EOF
 }
